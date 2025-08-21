@@ -1,0 +1,145 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(130deg, #a18cd1 0%, #fbc2eb 100%);
+  color: #23232b;
+  min-height: 100vh;
+  transition: background 1s, color 1s;
+}
+#main-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 40px 20px;
+}
+#game-visual {
+  flex: 1 1 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 350px;
+}
+#scene {
+  position: relative;
+  width: 400px;
+  height: 420px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 18px;
+  box-shadow: 0 6px 24px #bdbbcc66;
+  margin-bottom: 12px;
+}
+#shovel {
+  font-size: 48px;
+  position: absolute;
+  left: 20px;
+  top: 155px;
+  z-index: 3;
+  transition: color 1s;
+}
+#person {
+  position: absolute;
+  z-index: 2;
+  transition: left 1s, top 1s;
+}
+#coffin {
+  position: absolute;
+  z-index: 1;
+  left: 330px;
+  top: 250px;
+  transition: filter 1s;
+}
+#coffin img {
+  width: 120px;
+  opacity: 0.95;
+}
+#controls {
+  flex: 1 1 330px;
+  max-width: 350px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 18px;
+  box-shadow: 0 6px 32px #bbb4;
+  padding: 24px 20px 22px 20px;
+  margin: 0 0 0 28px;
+}
+#lifeForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#result {
+  font-size: 1.18em;
+  margin-top: 12px;
+  font-weight: bold;
+}
+input[type='text'],
+input[type='number'],
+select {
+  width: 99%;
+  padding: 7px;
+  margin-top: 3px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+#startCameraBtn,
+#captureBtn {
+  background-color: #674ea7;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 13px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+#submitBtn {
+  background: #47bf76;
+  color: #fff;
+  padding: 11px 0;
+  border-radius: 8px;
+  font-size: 1.08em;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.foods-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.food-item {
+  background: #fceabb;
+  padding: 3px 8px 3px 3px;
+  border-radius: 17px;
+  border: 1px solid #ffc093;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1.09em;
+  user-select: none;
+  transition: background 0.2s, border 0.2s;
+}
+.food-item.active {
+  background: #b6e2d3;
+  border: 1px solid #1db686;
+  color: #127659;
+}
+#photoPreview img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 7px;
+  box-shadow: 0 3px 12px #aaa7;
+}
+@media (max-width: 900px) {
+  #main-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  #controls {
+    margin-left: 0;
+    margin-top: 30px;
+  }
+}
+

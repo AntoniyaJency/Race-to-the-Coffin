@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>How Long Will You Live?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="main-container">
+    <div id="game-visual">
+      <div id="scene">
+        <div id="shovel">⛏️</div>
+        <div id="person">
+          <canvas id="faceCanvas" width="80" height="80"></canvas>
+        </div>
+        <div id="coffin">
+          <img src="https://i.ibb.co/TMxQZ5y/coffin.png" id="coffinImg" />
+        </div>
+      </div>
+    </div>
+    <div id="controls">
+      <form id="lifeForm">
+        <h2>Find Out How Long You'll Live!</h2>
+        <label>
+          Name: <input type="text" id="name" required />
+        </label>
+
+        <label>Take Picture:</label><br />
+        <button id="startCameraBtn" type="button">Start Camera</button><br />
+        <video id="video" width="80" height="80" style="display:none" autoplay></video><br />
+        <button id="captureBtn" type="button" style="display:none;">Capture 📸</button><br />
+        <canvas id="photo" width="80" height="80" style="display:none"></canvas>
+        <div id="photoPreview"></div>
+
+        <label>
+          Gender:
+          <select id="gender" required>
+            <option value="" disabled selected>Choose</option>
+            <option value="male">♂ Male</option>
+            <option value="female">♀ Female</option>
+            <option value="other">⚧️ Other</option>
+          </select>
+        </label>
+        <label>Country: <input type="text" id="country" readonly /></label>
+        <label>Age: <input type="number" id="age" min="1" max="120" required /></label>
+        <label>Favourite Foods:</label>
+        <div id="foods" class="foods-list"></div>
+        <button type="submit" id="submitBtn">Submit</button>
+        <div id="result"></div>
+      </form>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
