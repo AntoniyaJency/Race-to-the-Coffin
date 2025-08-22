@@ -1,4 +1,5 @@
-// --- Settings and Food Options ---
+// --- Settings and Food set ---
+
 const foodOptions = [
   { label: "Fruit 🍏", healthy: true },
   { label: "Vegetable 🥦", healthy: true },
@@ -31,10 +32,37 @@ const video = document.getElementById("video");
 const canvas = document.getElementById("photo");
 const photoPreview = document.getElementById("photoPreview");
 const faceCanvas = document.getElementById("faceCanvas");
+
 let capturedImageData = null;
 let mediaStream = null;
 
-// Setup food buttons
+// --- Page navigation ---
+
+document.getElementById("scrollDownBtn").onclick = () => {
+  document.getElementById("country-section").scrollIntoView({ behavior: "smooth" });
+};
+
+// Country section form
+document.getElementById("countryForm").onsubmit = function (e) {
+  e.preventDefault();
+  const countrySelect = document.getElementById("countrySelect");
+  if (!countrySelect.value) {
+    alert("Please select a country to continue.");
+    return;
+  }
+
+  userCountryCode = countrySelect.value;
+  userCountryName = countrySelect.options[countrySelect.selectedIndex].text;
+
+  // Fill country input in lifespan form
+  document.getElementById("country").value = userCountryName;
+
+  // Reveal lifespan section and scroll to it
+  document.getElementById("lifespan-section").classList.remove("hidden");
+  document.getElementById("lifespan-section").scrollIntoView({ behavior: "smooth" });
+};
+
+// Setup food buttons in lifespan form
 function setupFoodItems() {
   const foodsDiv = document.getElementById("foods");
   foodOptions.forEach((food, idx) => {
@@ -49,28 +77,10 @@ function setupFoodItems() {
 }
 setupFoodItems();
 
-// Geolocation fetching country code
-function fetchCountry(lat, lng) {
-  fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.address && data.address.country_code) {
-        userCountryCode = data.address.country_code.toUpperCase();
-        userCountryName = data.address.country ?? "";
-        document.getElementById("country").value = userCountryName || userCountryCode;
-      }
-    }).catch(() => { });
-}
-if ("geolocation" in navigator) {
-  navigator.geolocation.getCurrentPosition(pos => {
-    fetchCountry(pos.coords.latitude, pos.coords.longitude);
-  });
-}
-
-// Camera controls
+// --- Camera controls ---
 document.getElementById("startCameraBtn").onclick = function () {
   navigator.mediaDevices.getUserMedia({ video: true })
-    .then((stream) => {
+    .then(stream => {
       mediaStream = stream;
       video.srcObject = stream;
       video.style.display = "block";
@@ -80,9 +90,7 @@ document.getElementById("startCameraBtn").onclick = function () {
       capturedImageData = null;
       drawFace(null, false);
     })
-    .catch(() => {
-      alert("Could not access camera.");
-    });
+    .catch(() => alert("Could not access camera."));
 };
 
 document.getElementById("captureBtn").onclick = function () {
@@ -100,7 +108,7 @@ document.getElementById("captureBtn").onclick = function () {
   document.getElementById("startCameraBtn").style.display = "inline-block";
 };
 
-// Lifespan Calculation
+// --- Lifespan calculation ---
 function calculateDaysLeft({ gender, age, foods, countryCode }) {
   let ccode = baseExpectancy[countryCode] ? countryCode : "default";
   let expectancy = baseExpectancy[ccode][gender] || baseExpectancy[ccode].other;
@@ -116,7 +124,7 @@ function calculateDaysLeft({ gender, age, foods, countryCode }) {
   return { yearsLeft, days, expectancy };
 }
 
-// Scene setting and mood colors
+// --- Visual scene setup ---
 function setScene(daysLeft) {
   const personDiv = document.getElementById("person");
   let left, top;
@@ -127,29 +135,25 @@ function setScene(daysLeft) {
     bodyBg = "linear-gradient(120deg,#e0ffe0,#e3e0ff)";
     textColor = "#234524";
     shovelColor = "#34795c";
-  }
-  else if (daysLeft > 1095) {
+  } else if (daysLeft > 1095) {
     left = 140; top = 170;
     bodyBg = "linear-gradient(120deg,#cbe2ee,#f9e8d9)";
     textColor = "#374460";
     shovelColor = "#747229";
     coffinFilter = "saturate(.93)";
-  }
-  else if (daysLeft > 30) {
+  } else if (daysLeft > 30) {
     left = 225; top = 210;
     bodyBg = "linear-gradient(130deg,#f9ded7 10%,#e4e7ef 100%)";
     textColor = "#666252";
     shovelColor = "#9c8443";
     coffinFilter = "saturate(0.8)";
-  }
-  else if (daysLeft > 1) {
+  } else if (daysLeft > 1) {
     left = 315; top = 244;
     bodyBg = "linear-gradient(110deg,#ffc9c9 10%,#c1c1c1 100%)";
     textColor = "#9a2100";
     shovelColor = "#9a2100";
     coffinFilter = "saturate(.7) brightness(.9)";
-  }
-  else { // lying in coffin
+  } else {
     left = 350; top = 285;
     bodyBg = "radial-gradient(ellipse at center,#222934 60%,#101019 100%)";
     textColor = "#fafaff";
@@ -166,7 +170,7 @@ function setScene(daysLeft) {
   return { left, top };
 }
 
-// Draw the avatar face on canvas, rotate if lying down
+// --- Draw avatar face ---
 function drawFace(imgData, lyingDown) {
   const ctx = faceCanvas.getContext("2d");
   ctx.clearRect(0, 0, 80, 80);
@@ -197,7 +201,7 @@ function drawFace(imgData, lyingDown) {
   img.src = imgData;
 }
 
-// Animate person movement horizontally from startLeft to endLeft at top position
+// --- Animate avatar movement ---
 function animatePersonToCoffin(startLeft, endLeft, top, callback) {
   const personDiv = document.getElementById("person");
   personDiv.style.top = top + "px";
@@ -216,7 +220,7 @@ function animatePersonToCoffin(startLeft, endLeft, top, callback) {
   step();
 }
 
-// Form submission handler
+// --- Form submit lifespan ---
 document.getElementById("lifeForm").onsubmit = function (e) {
   e.preventDefault();
   const name = document.getElementById("name").value.trim();
@@ -225,7 +229,8 @@ document.getElementById("lifeForm").onsubmit = function (e) {
 
   let selectedFoods = [];
   document.querySelectorAll(".food-item").forEach((el, idx) => {
-    if (el.classList.contains("active")) selectedFoods.push(idx);
+    if (el.classList.contains("active"))
+      selectedFoods.push(idx);
   });
 
   let cc = userCountryCode || "default";
@@ -255,17 +260,18 @@ document.getElementById("lifeForm").onsubmit = function (e) {
 
     let msg = "";
     if (days > 10950)
-      msg = `🌟 Wow, <b>${name}</b>! The numbers say you have a <b>long, bright future</b> ahead.`;
+      msg = `🌟 Wow, <b>${name}</b>! You have a <b>long, bright future</b> ahead.`;
     else if (days > 3650) msg = `😊 <b>${name}</b>, there's plenty of life left!`;
     else if (days > 30) msg = `🔔 <b>${name}</b>, make every day count!`;
     else if (days > 1) msg = `⚰️ <b>${name}</b>, time is running short...`;
     else msg = `💀 <b>${name}</b>, it's nearly your time! Every second is precious.`;
 
-    msg += `<br>Expected years left: <b>${yearsLeft.toFixed(1)}</b> (<b>${days}</b> days).<br>Country base expectancy: ${expectancy} years.<br><span style="font-size:0.99em;">(Calculated creatively and for fun–live healthy and enjoy life!)</span>`;
+    msg += `<br>Expected years left: <b>${yearsLeft.toFixed(1)}</b> (<b>${days}</b> days).<br>Country base expectancy: ${expectancy} years.<br><span style="font-size:0.99em;">(Fun calculation—live well!)</span>`;
     document.getElementById("result").innerHTML = msg;
   });
 };
 
+// Initialize face with default smiley on page load
 window.onload = () => {
   drawFace(null, false);
 };
