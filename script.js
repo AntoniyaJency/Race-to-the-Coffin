@@ -220,7 +220,7 @@ function animatePersonToCoffin(startLeft, endLeft, top, callback) {
   step();
 }
 
-// --- Form submit lifespan ---
+// --- Lifespan form submission ---
 document.getElementById("lifeForm").onsubmit = function (e) {
   e.preventDefault();
   const name = document.getElementById("name").value.trim();
@@ -229,8 +229,7 @@ document.getElementById("lifeForm").onsubmit = function (e) {
 
   let selectedFoods = [];
   document.querySelectorAll(".food-item").forEach((el, idx) => {
-    if (el.classList.contains("active"))
-      selectedFoods.push(idx);
+    if (el.classList.contains("active")) selectedFoods.push(idx);
   });
 
   let cc = userCountryCode || "default";

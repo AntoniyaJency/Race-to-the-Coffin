@@ -7,36 +7,106 @@
 </head>
 <body>
 
-  <!-- First full-screen landing section -->
+  <!-- First full-screen landing section with your Spline 3D embedded -->
+  
   <section id="landing-section">
-    <div class="placeholder">
-      <h1>Your Stunning 3D Visual Here</h1>
-      <p>(Scroll down or use arrow below to begin)</p>
-      <button id="scrollDownBtn" aria-label="Scroll down">⬇️</button>
-    </div>
+    <div id="landing-text">
+    <h1>RACE TO THE COFFIN</h1>
+    <p>Click to open the coffin</p>
+  </div>
+    <iframe 
+      src="https://my.spline.design/coffin20withskullcrossbones-q4e632FuOCqzGfpSgO29DOGx/"
+      frameborder="0" 
+      allowfullscreen 
+      id="spline-iframe"
+      title="Coffin with Skull Crossbones 3D"
+    ></iframe>
   </section>
 
   <!-- Second full-screen country selection section -->
   <section id="country-section">
-    <div id="form-container">
-      <h2>Welcome! Please select your country to start</h2>
-      <form id="countryForm">
-        <label for="countrySelect">Select your country:</label>
-        <select id="countrySelect" required>
-          <option value="" disabled selected>Choose your country</option>
-          <option value="IN">🇮🇳 India</option>
-          <option value="US">🇺🇸 United States</option>
-          <option value="GB">🇬🇧 United Kingdom</option>
-          <option value="CA">🇨🇦 Canada</option>
-          <option value="AU">🇦🇺 Australia</option>
-          <option value="FR">🇫🇷 France</option>
-          <option value="DE">🇩🇪 Germany</option>
-          <!-- Add more countries -->
-        </select>
-        <button type="submit">Continue</button>
-      </form>
-    </div>
-  </section>
+    <h2>Tell us more about you</h2>
+
+    <div id="form-container1">
+      <!-- Full name -->
+      <label for="fullName">Full Name:</label>
+      <input type="text" id="fullName" name="fullName" placeholder="Your full name" required />
+
+      <!-- Gender -->
+      <label for="genderSelect">Gender:</label>
+      <select id="genderSelect" name="genderSelect" required>
+        <option value="" disabled selected>Choose your gender</option>
+        <option value="male">♂ Male</option>
+        <option value="female">♀ Female</option>
+        <option value="other">⚧️ Other</option>
+      </select>
+      </div>
+
+  <div id="form-container">
+    
+    <form id="infoForm">
+
+      
+
+      <div id="form-container2">
+
+      <!-- Age -->
+      <label for="ageInput">Age:</label>
+      <input type="number" id="ageInput" name="ageInput" min="1" max="120" placeholder="Your age" required />
+
+      <!-- Country with flags -->
+      <label for="countrySelect">Country of Residence:</label>
+      <select id="countrySelect" name="countrySelect" required>
+        <option value="" disabled selected>Choose your country</option>
+        <option value="IN">🇮🇳 India</option>
+        <option value="US">🇺🇸 United States</option>
+        <option value="GB">🇬🇧 United Kingdom</option>
+        <option value="CA">🇨🇦 Canada</option>
+        <option value="AU">🇦🇺 Australia</option>
+        <option value="FR">🇫🇷 France</option>
+        <option value="DE">🇩🇪 Germany</option>
+        <!-- Add more as desired -->
+      </select>
+      </div>
+
+
+      <!-- Lifestyle questions -->
+      <label>Do you smoke?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="smoke" value="no" checked /> No</label>
+        <label><input type="radio" name="smoke" value="occasionally" /> Occasionally</label>
+        <label><input type="radio" name="smoke" value="yes" /> Yes</label>
+      </div>
+
+      <label>How active are you?</label>
+      <select id="activityLevel" name="activityLevel" required>
+        <option value="" disabled selected>Select activity level</option>
+        <option value="low">Low (sedentary)</option>
+        <option value="medium">Medium (moderate exercise)</option>
+        <option value="high">High (daily intense exercise)</option>
+      </select>
+
+      <!-- Favorite foods (multiple select) -->
+      <label for="favFoods">Select your favorite foods (multiple):</label>
+      <select id="favFoods" name="favFoods" multiple size="6" required>
+        <option value="fruit">Fruit 🍏</option>
+        <option value="vegetable">Vegetable 🥦</option>
+        <option value="salad">Salad 🥗</option>
+        <option value="oats">Oats 🥣</option>
+        <option value="fish">Fish 🐟</option>
+        <option value="burger">Burger 🍔</option>
+        <option value="pizza">Pizza 🍕</option>
+        <option value="cake">Cake 🍰</option>
+        <option value="friedChicken">Fried Chicken 🍗</option>
+        <option value="chips">Chips 🍟</option>
+        <option value="soda">Soda 🥤</option>
+      </select>
+
+      <button type="submit">Continue to Lifespan Game</button>
+    </form>
+  </div>
+</section>
+
 
   <!-- Third section: lifespan input form -->
   <section id="lifespan-section" class="hidden">
@@ -76,7 +146,6 @@
           </label>
 
           <label>Country: <input type="text" id="country" readonly /></label>
-          
           <label>Age: <input type="number" id="age" min="1" max="120" required /></label>
 
           <label>Favourite Foods:</label>

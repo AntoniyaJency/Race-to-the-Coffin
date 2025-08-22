@@ -23,6 +23,7 @@ section {
   align-items: center;
   text-align: center;
   position: relative;
+  
 }
 
 /* Hide by default */
@@ -30,33 +31,63 @@ section {
   display: none !important;
 }
 
-/* Landing section */
+/* Landing section with iframe */
 #landing-section {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #111;
+  margin: 0;          /* no margin */
+  padding: 0;  
 }
-#landing-section .placeholder {
-  max-width: 700px;
+
+#landing-text {
+  position: relative; /* keep in normal flow at top */
+  z-index: 20; /* above iframe */
+  padding: 20px;
+  width: 70%;
+  text-align: center;
+  background: rgba(226, 217, 217, 0.5); /* translucent bg for readability */
+  box-sizing: border-box;
+  border-radius: 16px;
 }
-#landing-section h1 {
-  font-size: 3rem;
-  margin-bottom: 12px;
+
+#landing-text h1 {
+  margin-bottom: 5px;
+  font-size: 2.8rem;
   font-weight: 900;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  text-shadow: 0 2px 6px rgb(94, 49, 49);
 }
-#landing-section p {
-  font-size: 1.3rem;
-  font-style: italic;
-  margin-bottom: 30px;
+
+#spline-iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  border: none;
+  z-index: 1;
+  width: 100vw;       /* full viewport width */
+  height: 100vh; 
 }
+
+/* Overlay button on top of iframe */
 #scrollDownBtn {
+  position: relative;
+  z-index: 10;
   font-size: 2.4rem;
   padding: 12px 36px;
-  background: #fff8;
+  background: #ffffffcc;
   border-radius: 24px;
   border: none;
   cursor: pointer;
+  margin-top: auto;
+  margin-bottom: 30px;
+  user-select: none;
   transition: transform 0.3s ease;
 }
 #scrollDownBtn:hover {
@@ -65,10 +96,11 @@ section {
 
 /* Country section */
 #country-section {
-  background: linear-gradient(145deg, #f8f9fd, #dbe2ef);
+  background: linear-gradient(180deg, #d7b692, #dbe2ef);
   color: #2f3e46;
-  padding: 20px;
+  padding: 0 20px 20px 20px; /* top=0, right=20px, bottom=20px, left=20px */
 }
+
 
 #form-container {
   background: white;
@@ -80,8 +112,20 @@ section {
   margin: auto;
 }
 
-#form-container h2 {
-  margin-bottom: 24px;
+#form-container1 {
+  background: white;
+  box-shadow: 0 15px 35px rgba(100, 100, 100, 0.1);
+  border-radius: 18px;
+  padding: 40px 30px;
+  max-width: 420px;
+  width: 90%;
+  margin-left: 20px;
+  align-self: flex-start; 
+  margin-top: 60px;
+}
+
+#country-section h2 {
+  margin-top: 0px;
   font-weight: 700;
   font-size: 1.8rem;
   color: #3a5068;
@@ -287,3 +331,4 @@ button[type="submit"]:hover {
     max-width: 100%;
   }
 }
+
