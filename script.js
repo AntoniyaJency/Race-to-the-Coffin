@@ -1,276 +1,207 @@
-// --- Settings and Food set ---
-
+// ---------------- Settings, foods, and expectancy ----------------
 const foodOptions = [
-  { label: "Fruit 🍏", healthy: true },
-  { label: "Vegetable 🥦", healthy: true },
-  { label: "Salad 🥗", healthy: true },
-  { label: "Oats 🥣", healthy: true },
-  { label: "Fish 🐟", healthy: true },
-  { label: "Nuts 🥜", healthy: true },
-  { label: "Beans 🫘", healthy: true },
-  { label: "Pizza 🍕", healthy: false },
-  { label: "Burger 🍔", healthy: false },
-  { label: "Chips 🍟", healthy: false },
-  { label: "Fried Chicken 🍗", healthy: false },
-  { label: "Cake 🍰", healthy: false },
-  { label: "Cola 🥤", healthy: false },
-  { label: "Candy 🍬", healthy: false },
-  { label: "Pastries 🥐", healthy: false }
+  { label: "Fruit 🍏", healthy: true }, { label: "Vegetable 🥦", healthy: true }, { label: "Salad 🥗", healthy: true },
+  { label: "Oats 🥣", healthy: true }, { label: "Fish 🐟", healthy: true }, { label: "Nuts 🥜", healthy: true },
+  { label: "Beans 🫘", healthy: true }, { label: "Pizza 🍕", healthy: false }, { label: "Burger 🍔", healthy: false },
+  { label: "Chips 🍟", healthy: false }, { label: "Fried Chicken 🍗", healthy: false }, { label: "Cake 🍰", healthy: false },
+  { label: "Cola 🥤", healthy: false }, { label: "Candy 🍬", healthy: false }, { label: "Pastries 🥐", healthy: false }
 ];
 
-const baseExpectancy = {
-  IN: { male: 70, female: 74, other: 72 },
-  US: { male: 76, female: 80, other: 78 },
-  GB: { male: 79, female: 83, other: 81 },
-  default: { male: 72, female: 75, other: 73 }
+const baseExpectancy = { 
+  IN: { male: 70, female: 74, other: 72 }, 
+  US: { male: 76, female: 80, other: 78 }, 
+  GB: { male: 79, female: 83, other: 81 }, 
+  default: { male: 72, female: 75, other: 73 } 
 };
 
-let userCountryCode = "default";
-let userCountryName = "";
+let userCountryCode = "default", capturedImageData = null, mediaStream = null;
 
-const video = document.getElementById("video");
-const canvas = document.getElementById("photo");
-const photoPreview = document.getElementById("photoPreview");
-const faceCanvas = document.getElementById("faceCanvas");
+// ---------------- Elements ----------------
+const video = document.getElementById("video"),
+      canvas = document.getElementById("photo"),
+      photoPreview = document.getElementById("photoPreview");
 
-let capturedImageData = null;
-let mediaStream = null;
-
-// --- Page navigation ---
-
-document.getElementById("scrollDownBtn").onclick = () => {
-  document.getElementById("country-section").scrollIntoView({ behavior: "smooth" });
-};
-
-// Country section form
-document.getElementById("countryForm").onsubmit = function (e) {
-  e.preventDefault();
-  const countrySelect = document.getElementById("countrySelect");
-  if (!countrySelect.value) {
-    alert("Please select a country to continue.");
-    return;
-  }
-
-  userCountryCode = countrySelect.value;
-  userCountryName = countrySelect.options[countrySelect.selectedIndex].text;
-
-  // Fill country input in lifespan form
-  document.getElementById("country").value = userCountryName;
-
-  // Reveal lifespan section and scroll to it
-  document.getElementById("lifespan-section").classList.remove("hidden");
-  document.getElementById("lifespan-section").scrollIntoView({ behavior: "smooth" });
-};
-
-// Setup food buttons in lifespan form
+// ---------------- Setup food items ----------------
 function setupFoodItems() {
   const foodsDiv = document.getElementById("foods");
   foodOptions.forEach((food, idx) => {
     let div = document.createElement("div");
-    div.className = "food-item";
+    div.className = "food-item"; 
     div.innerText = food.label;
-    div.onclick = function () {
-      div.classList.toggle("active");
-    };
+    div.onclick = () => div.classList.toggle("active");
     foodsDiv.appendChild(div);
   });
 }
 setupFoodItems();
 
-// --- Camera controls ---
+// ---------------- Camera start ----------------
 document.getElementById("startCameraBtn").onclick = function () {
   navigator.mediaDevices.getUserMedia({ video: true })
     .then(stream => {
       mediaStream = stream;
       video.srcObject = stream;
-      video.style.display = "block";
+      video.style.display = "block"; 
       document.getElementById("captureBtn").style.display = "inline-block";
-      document.getElementById("startCameraBtn").style.display = "none";
-      photoPreview.innerHTML = "";
+      document.getElementById("startCameraBtn").style.display = "none"; 
+      photoPreview.innerHTML = ""; 
       capturedImageData = null;
-      drawFace(null, false);
+      drawFace(null); // show emoji when camera starts
     })
     .catch(() => alert("Could not access camera."));
 };
 
+// ---------------- Camera capture ----------------
 document.getElementById("captureBtn").onclick = function () {
-  canvas.getContext("2d").drawImage(video, 0, 0, 80, 80);
-  capturedImageData = canvas.toDataURL("image/png");
+  canvas.getContext("2d").drawImage(video, 0, 0, 90, 90);
+  capturedImageData = canvas.toDataURL("image/png"); 
   photoPreview.innerHTML = `<img src="${capturedImageData}">`;
+  
+  drawFace(capturedImageData); // <-- update the face
 
-  if (mediaStream) {
-    mediaStream.getTracks().forEach(track => track.stop());
-    mediaStream = null;
-  }
-  video.srcObject = null;
+  if (mediaStream) { mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
+  video.srcObject = null; 
   video.style.display = "none";
-  document.getElementById("captureBtn").style.display = "none";
+  document.getElementById("captureBtn").style.display = "none"; 
   document.getElementById("startCameraBtn").style.display = "inline-block";
 };
 
-// --- Lifespan calculation ---
+// ---------------- Form submission ----------------
+document.getElementById("countryForm").onsubmit = function (e) {
+  e.preventDefault();
+
+  const foodsSelected = [];
+  document.querySelectorAll("#foods .food-item").forEach((el, idx) => {
+    if (el.classList.contains("active")) foodsSelected.push(idx);
+  });
+
+  window.userFullName = document.getElementById("fullName").value;
+  window.userGender = document.getElementById("genderSelect").value;
+  window.userAge = parseInt(document.getElementById("ageInput").value);
+  let countryField = document.getElementById("countrySelectField");
+  userCountryCode = countryField.value || "default";
+  window.userFoods = foodsSelected;
+
+  document.getElementById("lifespan-section").scrollIntoView({ behavior: "smooth", block: "start" });
+  setTimeout(() => startPersonCoffinAnimation(), 300);
+};
+
+// ---------------- Accurate days & minutes calculation ----------------
 function calculateDaysLeft({ gender, age, foods, countryCode }) {
   let ccode = baseExpectancy[countryCode] ? countryCode : "default";
   let expectancy = baseExpectancy[ccode][gender] || baseExpectancy[ccode].other;
+
   let yearsLeft = expectancy - age;
-
-  foods.forEach(idx => {
-    if (foodOptions[idx].healthy) yearsLeft += 1.3;
-    else yearsLeft -= 1.7;
+  foods.forEach(idx => { 
+    if (foodOptions[idx].healthy) yearsLeft += 1.3; 
+    else yearsLeft -= 1.7; 
   });
-
   yearsLeft = Math.max(0, yearsLeft);
-  let days = Math.round(yearsLeft * 365.25);
-  return { yearsLeft, days, expectancy };
+
+  const days = Math.floor(yearsLeft * 365.25);
+  const minutes = Math.floor(yearsLeft * 365.25 * 24 * 60);
+
+  return { yearsLeft, days, minutes, expectancy };
 }
 
-// --- Visual scene setup ---
-function setScene(daysLeft) {
-  const personDiv = document.getElementById("person");
-  let left, top;
+// ---------------- Draw face ----------------
+function drawFace(imgData) {
+  const faceDiv = document.querySelector("#personWrap .animated-face");
+  if (!faceDiv) return;
 
-  let bodyBg, textColor, shovelColor, coffinFilter = "brightness(1) saturate(1.2)";
-  if (daysLeft > 7300) {
-    left = 25; top = 150;
-    bodyBg = "linear-gradient(120deg,#e0ffe0,#e3e0ff)";
-    textColor = "#234524";
-    shovelColor = "#34795c";
-  } else if (daysLeft > 1095) {
-    left = 140; top = 170;
-    bodyBg = "linear-gradient(120deg,#cbe2ee,#f9e8d9)";
-    textColor = "#374460";
-    shovelColor = "#747229";
-    coffinFilter = "saturate(.93)";
-  } else if (daysLeft > 30) {
-    left = 225; top = 210;
-    bodyBg = "linear-gradient(130deg,#f9ded7 10%,#e4e7ef 100%)";
-    textColor = "#666252";
-    shovelColor = "#9c8443";
-    coffinFilter = "saturate(0.8)";
-  } else if (daysLeft > 1) {
-    left = 315; top = 244;
-    bodyBg = "linear-gradient(110deg,#ffc9c9 10%,#c1c1c1 100%)";
-    textColor = "#9a2100";
-    shovelColor = "#9a2100";
-    coffinFilter = "saturate(.7) brightness(.9)";
-  } else {
-    left = 350; top = 285;
-    bodyBg = "radial-gradient(ellipse at center,#222934 60%,#101019 100%)";
-    textColor = "#fafaff";
-    shovelColor = "#34323a";
-    coffinFilter = "brightness(0.77) grayscale(0.62)";
-  }
-
-  personDiv.style.top = top + "px";
-  document.body.style.background = bodyBg;
-  document.body.style.color = textColor;
-  document.getElementById("shovel").style.color = shovelColor;
-  document.getElementById("coffinImg").style.filter = coffinFilter;
-
-  return { left, top };
-}
-
-// --- Draw avatar face ---
-function drawFace(imgData, lyingDown) {
-  const ctx = faceCanvas.getContext("2d");
-  ctx.clearRect(0, 0, 80, 80);
   if (!imgData) {
-    ctx.beginPath();
-    ctx.arc(40, 40, 35, 0, 2 * Math.PI);
-    ctx.fillStyle = "#e1beae";
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(40, 35, 20, 0, Math.PI, true);
-    ctx.fillStyle = "#a8773b";
-    ctx.fill();
-    ctx.font = "15px sans-serif";
-    ctx.fillStyle = "#392902";
-    ctx.fillText("🙂", 22, 50);
-    return;
+    faceDiv.style.background = "#f197a2"; // pink background
+    faceDiv.textContent = "🙂";            // emoji
+    faceDiv.style.backgroundImage = "";
+    faceDiv.style.backgroundSize = "cover";
+    faceDiv.style.backgroundPosition = "center";
+  } else {
+    faceDiv.style.background = "none";
+    faceDiv.textContent = "";
+    faceDiv.style.backgroundImage = `url(${imgData})`;
+    faceDiv.style.backgroundSize = "cover";
+    faceDiv.style.backgroundPosition = "center";
   }
-  let img = new window.Image();
-  img.onload = function () {
-    ctx.save();
-    if (lyingDown) {
-      ctx.translate(80, 0);
-      ctx.rotate(Math.PI / 2);
-    }
-    ctx.drawImage(img, 0, 0, 80, 80);
-    ctx.restore();
-  };
-  img.src = imgData;
 }
 
-// --- Animate avatar movement ---
-function animatePersonToCoffin(startLeft, endLeft, top, callback) {
-  const personDiv = document.getElementById("person");
-  personDiv.style.top = top + "px";
-  let left = startLeft;
-  personDiv.style.left = left + "px";
+// ---------------- Determine cause of death ----------------
+function getCauseOfDeath(foods) {
+  let unhealthyCount = foods.filter(idx => !foodOptions[idx].healthy).length;
 
-  function step() {
-    if (left < endLeft) {
-      left += 7;
-      personDiv.style.left = left + "px";
-      requestAnimationFrame(step);
-    } else {
-      if (callback) callback();
-    }
-  }
-  step();
+  if (unhealthyCount >= 5) return "due to excessive junk food 🍔🍕🍟";
+  if (unhealthyCount >= 3) return "because of an unhealthy diet 🥤🍰";
+  if (unhealthyCount > 0) return "due to some unhealthy eating habits";
+  return "naturally 💫"; // mostly healthy
 }
 
-// --- Lifespan form submission ---
-document.getElementById("lifeForm").onsubmit = function (e) {
-  e.preventDefault();
-  const name = document.getElementById("name").value.trim();
-  const gender = document.getElementById("gender").value;
-  const age = parseInt(document.getElementById("age").value);
+// ---------------- Animate person ----------------
+function startPersonCoffinAnimation() {
+  const personWrap = document.getElementById("personWrap");
+  const coffinWrap = document.getElementById("coffinWrap");
+  const personFace = document.querySelector("#personWrap .animated-face");
+  const resultDiv = document.getElementById("result");
 
-  let selectedFoods = [];
-  document.querySelectorAll(".food-item").forEach((el, idx) => {
-    if (el.classList.contains("active")) selectedFoods.push(idx);
+  personWrap.style.left="50px";
+  personWrap.style.opacity=1;
+
+  const { yearsLeft, days, minutes, expectancy } = calculateDaysLeft({
+    gender: window.userGender,
+    age: window.userAge,
+    foods: window.userFoods,
+    countryCode: userCountryCode
   });
 
-  let cc = userCountryCode || "default";
+  const bodyBg = days>7300?"linear-gradient(120deg,#edecc7,#f7debe,#e3e0ff)":days>1095?"linear-gradient(120deg,#cbe2ee,#f9e8d9,#f0eecc)":days>30?"linear-gradient(130deg,#f9ded7 10%,#e4e7ef 100%)":days>1?"linear-gradient(110deg,#ffc9c9 10%,#c1c1c1 100%)":"radial-gradient(ellipse at center,#222934 60%,#101019 100%)";
+  document.body.style.background=bodyBg;
 
-  const { yearsLeft, days, expectancy } = calculateDaysLeft({
-    gender, age, foods: selectedFoods, countryCode: cc
-  });
+  const coffinX = coffinWrap.offsetLeft;
+  let pos=50, bottomOffset=0, rotateDeg=0;
 
-  let startLeft = 25;
+  if(minutes<=0 || days<=0){
+    personWrap.style.opacity=0;
+    let cause = getCauseOfDeath(window.userFoods);
+    resultDiv.innerHTML = `💀 <b>${window.userFullName}</b> is dead ${cause}!`;
+  } else if(days<1){
+    pos = coffinX; bottomOffset=220;
+    personWrap.style.opacity=1;
+    resultDiv.innerHTML=`⚰️ <b>${window.userFullName}</b>, very few minutes left!<br>Expected years left: <b>${yearsLeft.toFixed(1)}</b> (<b>${days}</b> days).`;
+  } else {
+    const maxDays=36500;
+    const fraction = 1 - Math.min(1,days/maxDays);
+    const trackWidth = coffinX - 100;
+    pos=50+fraction*(trackWidth-personWrap.offsetWidth);
 
-  let endLeft;
-  if (days > 7300) endLeft = 25;
-  else if (days > 1095) endLeft = 140;
-  else if (days > 30) endLeft = 225;
-  else if (days > 1) endLeft = 315;
-  else endLeft = 350;
+    let healthyCount = window.userFoods.filter(idx=>foodOptions[idx].healthy).length;
+    let unhealthyCount = window.userFoods.filter(idx=>!foodOptions[idx].healthy).length;
+    pos -= healthyCount*10; pos += unhealthyCount*10;
+    pos = Math.max(50, Math.min(pos, coffinX-personWrap.offsetWidth));
+    bottomOffset=0;
 
-  let top = endLeft === 350 ? 285 :
-            endLeft === 315 ? 244 :
-            endLeft === 225 ? 210 :
-            endLeft === 140 ? 170 : 150;
+    let msg="";
+    if(days>10950) msg=`🌟 Wow, <b>${window.userFullName}</b>! You have a <b>long, bright future</b> ahead.`;
+    else if(days>3650) msg=`😊 <b>${window.userFullName}</b>, there's plenty of life left!`;
+    else if(days>30) msg=`🔔 <b>${window.userFullName}</b>, make every day count!`;
+    else msg=`⚰️ <b>${window.userFullName}</b>, time is running short...`;
+    msg+=`<br>Expected years left: <b>${yearsLeft.toFixed(1)}</b> (<b>${days}</b> days).<br>Country base expectancy: ${expectancy} years.`;
+    resultDiv.innerHTML=msg;
+  }
 
-  animatePersonToCoffin(startLeft, endLeft, top, () => {
-    setScene(days);
-    let lying = days <= 1;
-    drawFace(capturedImageData, lying);
+  if(capturedImageData){
+    personFace.style.backgroundImage=`url(${capturedImageData})`;
+    personFace.style.backgroundSize="cover";
+    personFace.style.backgroundPosition="center";
+    personFace.textContent = "";
+  }
 
-    let msg = "";
-    if (days > 10950)
-      msg = `🌟 Wow, <b>${name}</b>! You have a <b>long, bright future</b> ahead.`;
-    else if (days > 3650) msg = `😊 <b>${name}</b>, there's plenty of life left!`;
-    else if (days > 30) msg = `🔔 <b>${name}</b>, make every day count!`;
-    else if (days > 1) msg = `⚰️ <b>${name}</b>, time is running short...`;
-    else msg = `💀 <b>${name}</b>, it's nearly your time! Every second is precious.`;
+  personFace.style.transform=`rotate(${rotateDeg}deg)`;
+  personWrap.style.transition="left 1.2s ease, bottom 0.8s ease, opacity 0.8s ease";
+  personWrap.style.left = pos+"px";
+  personWrap.style.bottom = bottomOffset+"px";
 
-    msg += `<br>Expected years left: <b>${yearsLeft.toFixed(1)}</b> (<b>${days}</b> days).<br>Country base expectancy: ${expectancy} years.<br><span style="font-size:0.99em;">(Fun calculation—live well!)</span>`;
-    document.getElementById("result").innerHTML = msg;
-  });
-};
+  document.getElementById("restartBtn").classList.add("visible");
+}
 
-// Initialize face with default smiley on page load
-window.onload = () => {
-  drawFace(null, false);
-};
+// ---------------- Restart ----------------
+document.getElementById('restartBtn').onclick = () => location.reload();
+
+// ---------------- Default face ----------------
+window.onload = () => drawFace(null);

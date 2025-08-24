@@ -7,157 +7,119 @@
 </head>
 <body>
 
-  <!-- First full-screen landing section with your Spline 3D embedded -->
-  
+  <!-- Landing Section -->
   <section id="landing-section">
     <div id="landing-text">
-    <h1>RACE TO THE COFFIN</h1>
-    <p>Click to open the coffin</p>
-  </div>
-    <iframe 
+      <h1>RACE TO THE COFFIN</h1>
+      <p>Tap to open Coffin</p>
+    </div>
+    <iframe
       src="https://my.spline.design/coffin20withskullcrossbones-q4e632FuOCqzGfpSgO29DOGx/"
-      frameborder="0" 
-      allowfullscreen 
+      frameborder="0"
+      allowfullscreen
       id="spline-iframe"
       title="Coffin with Skull Crossbones 3D"
     ></iframe>
   </section>
 
-  <!-- Second full-screen country selection section -->
+  <!-- Second Section -->
   <section id="country-section">
     <h2>Tell us more about you</h2>
-
-    <div id="form-container1">
-      <!-- Full name -->
-      <label for="fullName">Full Name:</label>
-      <input type="text" id="fullName" name="fullName" placeholder="Your full name" required />
-
-      <!-- Gender -->
-      <label for="genderSelect">Gender:</label>
-      <select id="genderSelect" name="genderSelect" required>
-        <option value="" disabled selected>Choose your gender</option>
-        <option value="male">♂ Male</option>
-        <option value="female">♀ Female</option>
-        <option value="other">⚧️ Other</option>
-      </select>
+    <form id="countryForm" class="info-grid">
+      <div class="form-card">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Your full name" required />
+      </div>
+      <div class="form-card">
+        <label for="genderSelect">Gender:</label>
+        <select id="genderSelect" name="genderSelect" required>
+          <option value="" disabled selected>Choose your gender</option>
+          <option value="male">♂ Male</option>
+          <option value="female">♀ Female</option>
+          <option value="other">⚧️ Other</option>
+        </select>
+      </div>
+      <div class="form-card">
+        <label for="ageInput">Age:</label>
+        <input type="number" id="ageInput" name="ageInput" min="1" max="120" placeholder="Your age" required />
+      </div>
+      <div class="form-card">
+        <label for="countrySelectField">Country of Residence:</label>
+        <select id="countrySelectField" name="countrySelectField" required>
+          <option value="" disabled selected>Choose your country</option>
+          <option value="IN">🇮🇳 India</option>
+          <option value="US">🇺🇸 United States</option>
+          <option value="GB">🇬🇧 United Kingdom</option>
+          <option value="CA">🇨🇦 Canada</option>
+          <option value="AU">🇦🇺 Australia</option>
+          <option value="FR">🇫🇷 France</option>
+          <option value="DE">🇩🇪 Germany</option>
+        </select>
       </div>
 
-  <div id="form-container">
-    
-    <form id="infoForm">
-
-      
-
-      <div id="form-container2">
-
-      <!-- Age -->
-      <label for="ageInput">Age:</label>
-      <input type="number" id="ageInput" name="ageInput" min="1" max="120" placeholder="Your age" required />
-
-      <!-- Country with flags -->
-      <label for="countrySelect">Country of Residence:</label>
-      <select id="countrySelect" name="countrySelect" required>
-        <option value="" disabled selected>Choose your country</option>
-        <option value="IN">🇮🇳 India</option>
-        <option value="US">🇺🇸 United States</option>
-        <option value="GB">🇬🇧 United Kingdom</option>
-        <option value="CA">🇨🇦 Canada</option>
-        <option value="AU">🇦🇺 Australia</option>
-        <option value="FR">🇫🇷 France</option>
-        <option value="DE">🇩🇪 Germany</option>
-        <!-- Add more as desired -->
-      </select>
+      <div class="form-card photo-card">
+        <label>Take Live Photo:</label>
+        <button id="startCameraBtn" type="button">Start Camera</button>
+        <video id="video" width="90" height="90" autoplay muted style="display:none; border-radius: 50%;"></video>
+        <button id="captureBtn" type="button" style="display:none;">Capture 📸</button>
+        <canvas id="photo" width="90" height="90" style="display:none;"></canvas>
+        <div id="photoPreview"></div>
       </div>
 
-
-      <!-- Lifestyle questions -->
-      <label>Do you smoke?</label>
-      <div class="radio-group">
-        <label><input type="radio" name="smoke" value="no" checked /> No</label>
-        <label><input type="radio" name="smoke" value="occasionally" /> Occasionally</label>
-        <label><input type="radio" name="smoke" value="yes" /> Yes</label>
+      <div class="form-card food-multiselect-card full-width">
+        <label>Select your favorite foods (click to select):</label>
+        <div id="foods" class="foods-list"></div>
       </div>
 
-      <label>How active are you?</label>
-      <select id="activityLevel" name="activityLevel" required>
-        <option value="" disabled selected>Select activity level</option>
-        <option value="low">Low (sedentary)</option>
-        <option value="medium">Medium (moderate exercise)</option>
-        <option value="high">High (daily intense exercise)</option>
-      </select>
-
-      <!-- Favorite foods (multiple select) -->
-      <label for="favFoods">Select your favorite foods (multiple):</label>
-      <select id="favFoods" name="favFoods" multiple size="6" required>
-        <option value="fruit">Fruit 🍏</option>
-        <option value="vegetable">Vegetable 🥦</option>
-        <option value="salad">Salad 🥗</option>
-        <option value="oats">Oats 🥣</option>
-        <option value="fish">Fish 🐟</option>
-        <option value="burger">Burger 🍔</option>
-        <option value="pizza">Pizza 🍕</option>
-        <option value="cake">Cake 🍰</option>
-        <option value="friedChicken">Fried Chicken 🍗</option>
-        <option value="chips">Chips 🍟</option>
-        <option value="soda">Soda 🥤</option>
-      </select>
-
-      <button type="submit">Continue to Lifespan Game</button>
+      <div class="form-card full-width">
+        <button type="submit">CHECK YOUR LIFE SPAN</button>
+      </div>
     </form>
-  </div>
-</section>
+  </section>
 
+  <!-- Third Section -->
+  <section id="lifespan-section">
+    <div id="lifespan-container" class="hidden">
+      <div id="result" class="result-message"></div>
+      <div id="animation-wrapper">
 
-  <!-- Third section: lifespan input form -->
-  <section id="lifespan-section" class="hidden">
-    <div id="main-container">
-
-      <div id="game-visual">
-        <div id="scene">
-          <div id="shovel">⛏️</div>
-          <div id="person">
-            <canvas id="faceCanvas" width="80" height="80"></canvas>
-          </div>
-          <div id="coffin">
-            <img src="https://i.ibb.co/TMxQZ5y/coffin.png" id="coffinImg" />
-          </div>
+        <div id="personWrap">
+          <canvas id="faceCanvas" width="220" height="220" class="animated-face"></canvas>
+          <div class="person-shadow"></div>
+        </div>
+        
+        <div id="coffinWrap">
+          <img src="coffin.png" id="coffinImg" class="animated-coffin" />
         </div>
       </div>
-
       <div id="controls">
-        <form id="lifeForm">
-          <h2>Your Lifespan Journey</h2>
-          <label>Name: <input type="text" id="name" required /></label>
-
-          <label>Take Picture:</label><br/>
-          <button id="startCameraBtn" type="button">Start Camera</button><br/>
-          <video id="video" width="80" height="80" style="display:none" autoplay muted></video><br/>
-          <button id="captureBtn" type="button" style="display:none;">Capture 📸</button><br/>
-          <canvas id="photo" width="80" height="80" style="display:none"></canvas>
-          <div id="photoPreview"></div>
-
-          <label>Gender:
-            <select id="gender" required>
-              <option value="" disabled selected>Choose</option>
-              <option value="male">♂ Male</option>
-              <option value="female">♀ Female</option>
-              <option value="other">⚧️ Other</option>
-            </select>
-          </label>
-
-          <label>Country: <input type="text" id="country" readonly /></label>
-          <label>Age: <input type="number" id="age" min="1" max="120" required /></label>
-
-          <label>Favourite Foods:</label>
-          <div id="foods" class="foods-list"></div>
-
-          <button type="submit" id="submitBtn">Submit</button>
-          <div id="result"></div>
-        </form>
+        <button id="restartBtn" class="hidden">Start Again</button>
       </div>
     </div>
   </section>
 
   <script src="script.js"></script>
+
+  <footer id="main-footer">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <h3>Lifespan Game</h3>
+    </div>
+    <div class="footer-links">
+      <a href="#landing-section">Home</a>
+      <a href="#country-section">Profile</a>
+      <a href="#lifespan-section">Game</a>
+      <a href="#contact-section">Contact</a>
+    </div>
+    <div class="footer-social">
+      <a href="#"><img src="facebook.svg" alt="Facebook"></a>
+      <a href="#"><img src="twitter.svg" alt="Twitter"></a>
+      <a href="#"><img src="instagram.svg" alt="Instagram"></a>
+    </div>
+    <p class="footer-copy">© 2025 Lifespan Game. All rights reserved.</p>
+  </div>
+</footer>
+
+
 </body>
 </html>
