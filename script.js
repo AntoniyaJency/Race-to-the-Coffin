@@ -50,6 +50,20 @@ document.getElementById("startCameraBtn").onclick = function () {
     .catch(() => alert("Could not access camera."));
 };
 
+// -------------- Photo Upload Handler --------------
+document.getElementById("uploadInput").onchange = function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (evt) {
+    capturedImageData = evt.target.result;
+    photoPreview.innerHTML = `<img src="${capturedImageData}">`;
+    drawFace(capturedImageData);
+  };
+  reader.readAsDataURL(file);
+};
+
 // ---------------- Camera capture ----------------
 document.getElementById("captureBtn").onclick = function () {
   canvas.getContext("2d").drawImage(video, 0, 0, 90, 90);
