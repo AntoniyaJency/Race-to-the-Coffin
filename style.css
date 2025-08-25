@@ -88,6 +88,7 @@ section {
   padding: 24px 18px 18px 18px;
   display: flex;
   flex-direction: column;
+  
 }
 
 .form-card.full-width { 
@@ -168,17 +169,37 @@ button[type="submit"]:hover {
 
 /* Third section */
 #lifespan-section {
+  position: relative;
   min-height: 100vh;
   padding: 60px 20px;
   color: #fff;
-  background: linear-gradient(to bottom,#100f01,#979592,#6a4406);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  transition: background 1.2s ease;
+  overflow: hidden;
+  background: linear-gradient(to bottom,#100f01,#979592,#6a4406);
 }
 
+/* Background for third section (iframe) */
+#lifespan-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#lifespan-bg iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Container */
 #lifespan-container {
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: 1200px;
   display: flex;
@@ -194,7 +215,7 @@ button[type="submit"]:hover {
   user-select: none;
   text-align: center;
   color: #fff;
-  background: linear-gradient(135deg, #ff6b6b, #f7d794);
+  background: linear-gradient(135deg, #be7609, #f7d794);
   padding: 20px 25px;
   border-radius: 18px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.25);
@@ -206,36 +227,28 @@ button[type="submit"]:hover {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 700px;
   width: 100%;
   min-height: 400px;
-  margin-top: 60px;
-  position: relative; /* needed for absolute positioning inside */
+  position: relative;
+  gap: 0;
 }
 
-/* Person wrapper */
+/* Person wrapper (left) */
 #personWrap {
-  flex-basis: 50%;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
-  position: absolute;  /* absolute for horizontal movement */
-  left: 50px;
-  bottom: 0;           /* stick to bottom */
-  z-index: 2;          /* above coffin */
+  z-index: 2;
 }
 
-/* Coffin wrapper */
+/* Coffin wrapper (right) */
 #coffinWrap {
-  flex-basis: 50%;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  position: absolute;  /* absolute to fix on right */
-  right: 50px;
-  bottom: 0;
-  z-index: 1;          /* below person */
+  z-index: 1;
 }
 
 .animated-face {
@@ -247,12 +260,11 @@ button[type="submit"]:hover {
   border-radius: 50%;
   width: 250px;
   height: 250px;
-  background: #f197a2; /* default pink */
+  background: #080707;
   box-shadow: 0 10px 35px rgba(97,67,37,0.5), 0 4px 10px rgba(255,255,255,0.7);
   transition: transform 0.8s ease, background 0.8s ease, opacity 0.5s ease;
   text-align: center;
 }
-
 
 .person-shadow {
   width: 120px;
@@ -264,7 +276,6 @@ button[type="submit"]:hover {
   opacity: 0.9;
 }
 
-/* Coffin image */
 #coffinImg {
   width: 400px;  
   max-width: 100%;
@@ -283,7 +294,7 @@ button[type="submit"]:hover {
 }
 
 #restartBtn {
-  background-color: #f197a2;
+  background-color: #d2921b;
   color: white;
   border: none;
   border-radius: 24px;
@@ -291,7 +302,7 @@ button[type="submit"]:hover {
   font-weight: 700;
   font-size: 1.2rem;
   cursor: pointer;
-  box-shadow: 0 6px 16px #e64b61cc;
+  box-shadow: 0 6px 16px #191615cc;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease, transform 0.3s ease;
@@ -304,11 +315,11 @@ button[type="submit"]:hover {
 }
 
 #restartBtn:hover {
-  background: #e7305d;
+  background: #d56f0f;
   transform: scale(1.05);
 }
 
-/* Message inside coffin when person disappears */
+/* Message inside coffin */
 .animated-message {
   position: absolute;
   top: 50%;
@@ -350,6 +361,7 @@ button[type="submit"]:hover {
   }
 }
 
+/* Forms */
 label {
   font-weight: 700;
   margin-bottom: 6px;
@@ -367,15 +379,10 @@ input[type="text"], input[type="number"], select, textarea {
   transition: border-color 0.3s ease;
 }
 
-button, 
-input[type="text"], 
-input[type="number"], 
-select, 
-textarea {
+button, input[type="text"], input[type="number"], select, textarea {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1rem; /* or 2rem for really big text */
+  font-size: 1rem;
 }
-
 
 /* Footer */
 #main-footer {
@@ -404,80 +411,5 @@ textarea {
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #ff6b6b;
-  margin-bottom: 10px;
-}
-
-.footer-links {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.footer-links a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.footer-links a:hover {
-  color: #ff6b6b;
-  transform: scale(1.05);
-}
-
-.footer-social {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-}
-
-.footer-social a img {
-  width: 30px;
-  height: 30px;
-  filter: brightness(0) invert(1);
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.footer-social a:hover img {
-  transform: scale(1.2);
-  filter: brightness(0) invert(0.8) sepia(1) saturate(5) hue-rotate(330deg);
-}
-
-.footer-copy {
-  font-size: 0.9rem;
-  color: #ccc;
-  margin-top: 10px;
-}
-
-/* Responsive Footer */
-@media (max-width: 768px) {
-  .footer-links {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .footer-social {
-    gap: 10px;
-  }
-}
-
-select {
-  width: 100%;
-  padding: 8px 12px;        /* slightly more horizontal padding for comfort */
-  border: 1.5px solid #ccc; /* existing border */
-  border-radius: 8px;       /* rounded corners */
-  font-size: 1rem;
-  background-color: #fff;   /* ensures white background */
-  color: #333;              /* text color */
-  appearance: none;         /* removes default arrow styling */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  cursor: pointer;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-select:focus {
-  border-color: #5271ff;    /* highlight color when focused */
-  box-shadow: 0 0 6px rgba(82, 113, 255, 0.4);
-  outline: none;
+  margin-bottom: 12px;
 }

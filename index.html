@@ -27,25 +27,29 @@
     <h2>Tell us more about you</h2>
     <form id="countryForm" class="info-grid">
       <div class="form-card">
-        <label for="fullName">Full Name:</label>
+        <label for="fullName">Full Name:</label><br>
         <input type="text" id="fullName" name="fullName" placeholder="Your full name" required />
+        <br>
       </div>
       <div class="form-card">
         <label for="genderSelect">Gender:</label>
+        <br>
         <select id="genderSelect" name="genderSelect" required>
           <option value="" disabled selected>Choose your gender</option>
           <option value="male">♂ Male</option>
           <option value="female">♀ Female</option>
           <option value="other">⚧️ Other</option>
         </select>
+        <br>
       </div>
       <div class="form-card">
         <label for="ageInput">Age:</label>
+        <br>
         <input type="number" id="ageInput" name="ageInput" min="1" max="120" placeholder="Your age" required />
       </div>
       <div class="form-card">
-        <label for="countrySelectField">Country of Residence:</label>
-        <select id="countrySelectField" name="countrySelectField" required>
+        <label for="countrySelectField">Country of Residence:</label><br>
+        <select id="countrySelectField" name="countrySelectField" required >
           <option value="" disabled selected>Choose your country</option>
           <option value="IN">🇮🇳 India</option>
           <option value="US">🇺🇸 United States</option>
@@ -55,10 +59,11 @@
           <option value="FR">🇫🇷 France</option>
           <option value="DE">🇩🇪 Germany</option>
         </select>
+        <br>
       </div>
 
       <div class="form-card photo-card">
-        <label>Take Live Photo:</label>
+        <label>Take Live Photo:</label><br>
         <button id="startCameraBtn" type="button">Start Camera</button>
         <video id="video" width="90" height="90" autoplay muted style="display:none; border-radius: 50%;"></video>
         <button id="captureBtn" type="button" style="display:none;">Capture 📸</button>
@@ -66,7 +71,7 @@
         <div id="photoPreview"></div>
       </div>
       <div class="form-card photo-card">
-        <label for="uploadInput" style="font-weight:500;font-size:0.95em;color:#fff;margin:3px 0 8px 0;">Or upload a photo from your device</label>
+        <label for="uploadInput" >Or upload a photo from your device</label>
         <button id="captureBtn" type="button" style="display:none;">Capture 📸</button>
         <input type="file" id="uploadInput" accept="image/*" style="margin-top: 12px;">
         
@@ -87,25 +92,41 @@
   </section>
 
   <!-- Third Section -->
-  <section id="lifespan-section">
-    <div id="lifespan-container" class="hidden">
-      <div id="result" class="result-message"></div>
-      <div id="animation-wrapper">
+  <!-- Third Section -->
+<section id="lifespan-section">
+  <!-- Background iframe -->
+  <div id="lifespan-bg">
+    <iframe 
+      title="Realistic Graveyard" 
+      frameborder="0" 
+      allowfullscreen 
+      mozallowfullscreen="true" 
+      webkitallowfullscreen="true" 
+      allow="autoplay; fullscreen; xr-spatial-tracking"
+      src="https://sketchfab.com/models/5e54ddca18ae4c77b89a4bed781350ce/embed?autostart=1&preload=1&transparent=1&ui_theme=dark">
+    </iframe>
+  </div>
 
-        <div id="personWrap">
-          <canvas id="faceCanvas" width="220" height="220" class="animated-face"></canvas>
-          <div class="person-shadow"></div>
-        </div>
-        
-        <div id="coffinWrap">
-          <img src="coffin.png" id="coffinImg" class="animated-coffin" />
-        </div>
+  <div id="lifespan-container" class="hidden">
+    <!-- Existing content here -->
+    <div id="result" class="result-message"></div>
+    <div id="animation-wrapper">
+      <div id="personWrap">
+        <canvas id="faceCanvas" width="220" height="220" class="animated-face"></canvas>
+        <div class="person-shadow"></div>
       </div>
-      <div id="controls">
-        <button id="restartBtn" class="hidden">Start Again</button>
+      <div id="coffinWrap">
+        <img src="coffin.png" id="coffinImg" class="animated-coffin" />
       </div>
     </div>
-  </section>
+    <div id="controls">
+      <button id="restartBtn" class="hidden">Start Again</button>
+    </div>
+  </div>
+</section>
+
+
+  
 
   <script src="script.js"></script>
 
@@ -114,17 +135,7 @@
     <div class="footer-logo">
       <h3>Lifespan Game</h3>
     </div>
-    <div class="footer-links">
-      <a href="#landing-section">Home</a>
-      <a href="#country-section">Profile</a>
-      <a href="#lifespan-section">Game</a>
-      <a href="#contact-section">Contact</a>
-    </div>
-    <div class="footer-social">
-      <a href="#"><img src="facebook.svg" alt="Facebook"></a>
-      <a href="#"><img src="twitter.svg" alt="Twitter"></a>
-      <a href="#"><img src="instagram.svg" alt="Instagram"></a>
-    </div>
+    
     <p class="footer-copy">© 2025 Lifespan Game. All rights reserved.</p>
   </div>
 </footer>
